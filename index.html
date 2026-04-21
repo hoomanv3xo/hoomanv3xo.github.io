@@ -1,62 +1,127 @@
-<html>
+<!DOCTYPE html>
+<html lang="en">
 <head>
-
-<style type="text/css" media="all">
-<!--
-.hiddenlink {
-  color: #000; /* same color as the surrounding text */
-  /* text-decoration: none;  to remove the underline */
-  /*cursor: text;  to make the cursor stay as a text cursor, not the hand */
--->
-</style> 
-
-<style fprolloverstyle>a:hover      { color: #FF0000; font-weight: bold }
-code          { font-weight: bold }
-.className    { font-family: "Arial"; font-weight: bold }
-.methodName   { font-family: "Courier"; font-weight: bold; font-style: italic }
-.term   { font-style: italic }
-.new { font-weight: bold; color: #0000FF; }
-em { font-weight: bold; color: #800080; }
-</style>
-
-<meta http-equiv="Page-Enter" content="revealTrans(Duration=3.0,Transition=23)">
-<meta http-equiv="Page-Exit" content="revealTrans(Duration=3.0,Transition=23)">
-<meta http-equiv="Site-Enter" content="revealTrans(Duration=3.0,Transition=23)">
-<meta http-equiv="Site-Exit" content="revealTrans(Duration=3.0,Transition=23)">
+<meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+<title>Home</title>
+
+<style>
+body {
+    margin: 0;
+    font-family: Arial, sans-serif;
+    background: #fff;
+    text-align: center;
+}
+
+/* Navigation */
+.nav {
+    padding: 15px;
+}
+.nav a {
+    margin: 0 10px;
+    text-decoration: none;
+    color: black;
+    font-weight: bold;
+}
+.nav a:hover {
+    color: red;
+}
+
+/* Title */
+.title {
+    font-size: 2rem;
+    color: red;
+    margin: 10px 0;
+}
+
+/* Main container */
+.container {
+    max-width: 900px;
+    margin: auto;
+    padding: 15px;
+}
+
+/* Card */
+.card {
+    background: white;
+    border: 1px solid black;
+    padding: 20px;
+    box-shadow: 5px 5px 15px rgba(0,0,0,0.2);
+    text-align: left;
+}
+
+/* Images */
+img {
+    max-width: 100%;
+    height: auto;
+}
+
+/* Responsive text */
+p {
+    font-size: 1rem;
+    line-height: 1.6;
+}
+
+/* Small screens */
+@media (max-width: 600px) {
+    .title {
+        font-size: 1.5rem;
+    }
+    p {
+        font-size: 0.95rem;
+    }
+}
+</style>
 </head>
 
-<body bgcolor="white">
+<body>
 
-<center>
-<font size="5" face="Arial">
-<a href="index.html">Home</a>
-<a href="projects.html">Projects</a>
-<a href="etc.html">Etc</a>
+<div class="nav">
+    <a href="index.html">Home</a>
+    <a href="projects.html">Projects</a>
+    <a href="etc.html">Etc</a>
+</div>
 
-<br><span style="width: 357; height: 50; font-size: 30px; font-family: Arial Black; color: red; 
-Filter: Shadow(Color=#000FFF, Direction=225)">HOME</span> 
+<div class="title">HOME</div>
 
-<div style="height:100%;width:800px;padding:10px;filter:shadow(color:gray, 
-strength:10, direction:135);"> <div style="height=100%;width:800px;text-
-align:left;padding:10px;background-color:white;border:1px 
-solid black;font-size:12px;">
+<div class="container">
+    <div class="card">
 
-<br><img src="canada.gif" border="0">
-<center><img src="welcome.webp" style="width: 100px; height: auto;">
-<font size="3" face="Arial">
-<p>Hi, My name is Hooman and I am a Software Developer in Toronto, Canada.</p>
-<p>I hold a Certificate in Computer Programming Applications from <a href="http://www.torontomu.ca">Toronto Metropolitan University</a> and 
-a Diploma in Computer Network Technician (MCSE Specialization) from <a href="https://www.cdicollege.ca"> CDI College</a>.</p>
-<p>Currently, I am studying towards an Associate Degree in Business Administration from <a href="http://www.uopeople.edu">University of the People</a> </p>		
-<p>Enjoy your visit.<p>
-<br><a href="mailto:hoomanv3@gmail.com"><img src="email.gif" alt="E-Mail" border="0"></a>
-</center>
- </div> </div>
+        <img src="canada.gif" alt="Canada">
 
+        <div style="text-align:center;">
+            <img src="welcome.webp" style="max-width:100px;" alt="Welcome">
 
-</center>
+            <p>Hi, My name is Hooman and I am a Software Developer in Toronto, Canada.</p>
+
+            <p>
+                I hold a Certificate in Computer Programming Applications from 
+                <a href="http://www.torontomu.ca">Toronto Metropolitan University</a> and 
+                a Diploma in Computer Network Technician (MCSE Specialization) from 
+                <a href="https://www.cdicollege.ca">CDI College</a>.
+            </p>
+
+            <p>
+                Currently, I am studying towards an Associate Degree in Business Administration 
+                from <a href="http://www.uopeople.edu">University of the People</a>.
+            </p>
+
+            <p>Enjoy your visit.</p>
+
+            <a href="mailto:hoomanv3@gmail.com">
+                <img src="email.gif" alt="E-Mail">
+            </a>
+        </div>
+
+    </div>
+</div>
 
 </body>
-
 </html>
+
+
+
+
+
+
