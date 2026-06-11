@@ -1,128 +1,54 @@
 <!DOCTYPE html>
-<html lang="en">
+<html>
 <head>
-<meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
-
-<title>Projects</title>
-
-<style>
-body {
-    margin: 0;
-    font-family: Arial, sans-serif;
-    background: #fff;
-    text-align: center;
-}
-
-/* Navigation */
-.nav {
-    padding: 15px;
-}
-.nav a {
-    margin: 0 10px;
-    text-decoration: none;
-    color: black;
-    font-weight: bold;
-}
-.nav a:hover {
-    color: red;
-}
-
-/* Title */
-.title {
-    font-size: 2rem;
-    color: red;
-    margin: 10px 0;
-}
-
-/* Container */
-.container {
-    max-width: 1000px;
-    margin: auto;
-    padding: 15px;
-}
-
-/* Card wrapper */
-.projects {
-    display: flex;
-    flex-wrap: wrap;
-    justify-content: center;
-    gap: 20px;
-}
-
-/* Project card */
-.project-box {
-    flex: 1 1 250px;
-    max-width: 300px;
-    border: 1px solid black;
-    background: white;
-    padding: 15px;
-    box-shadow: 5px 5px 15px rgba(0,0,0,0.2);
-    text-align: center;
-}
-
-/* Images */
-.project-box img {
-    width: 100%;
-    height: auto;
-    border: 1px solid black;
-}
-
-/* Text */
-.project-box p {
-    font-size: 0.95rem;
-    line-height: 1.5;
-}
-
-/* Mobile tweaks */
-@media (max-width: 600px) {
-    .title {
-        font-size: 1.5rem;
-    }
-}
-</style>
+    <title>Projects</title>
+    <link rel="stylesheet" href="mainstyle.css">
 </head>
 
 <body>
+<div id="wrapper">
 
-<div class="nav">
-    <a href="index.html">Home</a>
-    <a href="projects.html">Projects</a>
-    <a href="etc.html">Etc</a>
-</div>
+    <div id="leftcolumn">
+        <h3>Links</h3>
+        <a href="index.html">Home</a>
+        <a href="projects.html">Projects</a>
+        <a href="resume.html">Resume</a>
+        <a href="etc.html">Etc</a>
+    </div>
 
-<div class="title">PROJECTS</div>
+    <div id="content">
+        <h1>My Projects</h1>
 
-<div class="container">
-    <div class="projects">
+        <div class="projects-container">
 
-        <div class="project-box">
-            <a href="http://github.com/hoomanv3xo/Olympic-Race-Simulator">Code</a>
-            <img src="project1.png" alt="Olympic Race Simulator">
-            <h3>Olympic Race Simulator</h3>
-            <p>A stopwatch used to time an Olympic-style simulation, ranking participants based on their recorded time, using HTML/CSS and JavaScript.</p>
-        </div>
+            <div class="project-card">
+                <h3>Flask Cohere Chatbot</h3>
+                <p>A simple web-based chatbot built with Flask and powered by the Cohere AI API. Users can ask questions through a browser interface and receive AI-generated responses
+                   rendered in formatted Markdown.</p>                
+                 <a href="https://github.com/hoomanv3xo/Chatbot">View Project</a>
+            </div>
 
-        <div class="project-box">
-            <a href="http://github.com/hoomanv3xo/Weight-Tracker">Code</a>
-            <img src="project2.png" alt="Weight Tracker">
-            <h3>Weight Tracker</h3>
-            <p>An app that records user's weight and graphs the progress.</p>
-        </div>
+            <div class="project-card">
+                <h3>Diabetes Prediction System</h3>
+                <p>A machine learning web application that predicts the risk of diabetes based on patient health metrics. Built with Streamlit and a Random Forest Classifier trained on the
+                   Pima Indians Diabetes dataset.   
+                </p>
+                <a href="https://github.com/hoomanv3xo/Diabetes-Prediction-System">View Project</a>
+            </div>
 
-        <div class="project-box">
-            <a href="http://github.com/hoomanv3xo/Registration-System">Code</a>
-            <img src="project3.png" alt="Registration System">
-            <h3>Registration System</h3>
-            <p>An app for Student Registration.</p>
+            <div class="project-card">
+                <h3>Stock Portfolio</h3>
+                <p>A simple Flask web application for tracking stock purchases. Users can add stocks by entering a symbol, number of shares, and purchase price, then view them in a 
+                   portfolio table.
+            </p>
+                <a href="https://github.com/hoomanv3xo/Stocks-Portfolio/tree/main">View Project</a>
+            </div>
+
         </div>
 
     </div>
-</div>
 
+</div>
 </body>
 </html>
 
-  
-
- 
