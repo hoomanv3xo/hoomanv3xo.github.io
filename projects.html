@@ -1,13 +1,24 @@
-<!DOCTYPE html>
-<html>
-<head>
-    <title>Projects</title>
-    <link rel="stylesheet" href="mainstyle.css">
-</head>
+pystocks.html30 lineshtmlabout.html35 lineshtmladd_stock.html19 lineshtmlbase.html130 lineshtmlindex.html37 lineshtmlwrite a readme file6:16 PMClaude responded: Here's your README.Ran a command, read a fileRan a command, read a fileHere's your README. A couple of things worth flagging that I noted from the code:
 
-<body>
+Session-only storage — the app stores just one stock at a time in the Flask session, so adding a new stock overwrites the previous one. The README calls this out and suggests SQLite as a next step.
+Hardcoded secret key — 'BAD_SECRET_KEY' is currently in app.py. The README includes a reminder to swap it for an environment variable before any deployment.
+ReadmeDocument · MD DownloadYou said: can i get bigger fonts for titlescan i get bigger fonts for titles6:20 PMClaude responded: Sure!Sure! Here's the updated README with larger title fonts using # heading levels bumped up where possible:Viewed a file, ran a command, read a fileViewed a file, ran a command, read a fileAll section titles are now # (H1) instead of ## (H2), so they'll render larger. I also added horizontal rules (---) between sections to keep things visually clean and easy to scan.ReadmeDocument · MD DownloadYou said: this does not work againapp.py36 linespyhome.html139 lineshtmlthis does not work again7:02 PMClaude responded: Looking at your app.Looking at your app.py, I can see the issue — the Cohere client is being created inside the route function on every request, and the API key is just a placeholder 'your key'. Let me check what else might be wrong.
+The main issues I can spot:
+
+'your key' — the API key is a placeholder and needs to be replaced with your real Cohere key
+Client inside the route — cohere.ClientV2(...) is called on every request, which is inefficient and can cause issues
+secrets.token_hex(16) on every restart — the secret key regenerates each time the app restarts, invalidating sessions
+
+Here's the fixed app.py:Created a file, read a fileCreated a file, read a fileThe key fixes:
+1. Replace your API key — either directly in the file:
+pythonco = cohere.ClientV2('YOUR_REAL_API_KEY_HERE')
+Or set it as an environment variable (recommended):
+bashexport COHERE_API_KEY=your_actual_key_here
+python app.py
+2. Cohere client moved outside the route — it now initializes once when the app starts instead of on every request.
+3. Stable secret key — no longer regenerates on every restart. Set it via environment variable or just leave the fallback string for local development.
+The home.html doesn't need any changes — that part was fine.AppPY DownloadYou said: add the project pictures to this page:<body>add the project pictures to this page:<body>
 <div id="wrapper">
-
     <div id="leftcolumn">
         <h3>Links</h3>
         <a href="index.html">Home</a>
@@ -15,19 +26,15 @@
         <a href="resume.html">Resume</a>
         <a href="etc.html">Etc</a>
     </div>
-
     <div id="content">
         <h1>My Projects</h1>
-
         <div class="projects-container">
-
             <div class="project-card">
                 <h3>Flask Cohere Chatbot</h3>
                 <p>A simple web-based chatbot built with Flask and powered by the Cohere AI API. Users can ask questions through a browser interface and receive AI-generated responses
                    rendered in formatted Markdown.</p>                
                  <a href="https://github.com/hoomanv3xo/Chatbot">View Project</a>
             </div>
-
             <div class="project-card">
                 <h3>Diabetes Prediction System</h3>
                 <p>A machine learning web application that predicts the risk of diabetes based on patient health metrics. Built with Streamlit and a Random Forest Classifier trained on the
@@ -35,7 +42,6 @@
                 </p>
                 <a href="https://github.com/hoomanv3xo/Diabetes-Prediction-System">View Project</a>
             </div>
-
             <div class="project-card">
                 <h3>Stock Portfolio</h3>
                 <p>A simple Flask web application for tracking stock purchases. Users can add stocks by entering a symbol, number of shares, and purchase price, then view them in a 
@@ -43,12 +49,52 @@
             </p>
                 <a href="https://github.com/hoomanv3xo/Stocks-Portfolio/tree/main">View Project</a>
             </div>
-
         </div>
-
     </div>
+</div>
+</body>
+</html>Show more7:13 PMClaude responded: From the screenshots I can see: project1 = Stock Portfolio, project2 = Chatbot, project3 = Diabetes.Check uploaded image filenamesCheck uploaded image filenamesFrom the screenshots I can see: project1 = Stock Portfolio, project2 = Chatbot, project3 = Diabetes. I'll match each image to its correct card.Ran a command, created a file, read a fileRan a command, created a file, read a fileDone! Each project card now has its matching screenshot at the top:
 
+project2.png → Chatbot card
+project3.png → Diabetes Prediction card
+project1.png → Stock Portfolio card
+
+Make sure all 4 files (projects.html + the 3 .png files) are in the same folder on your computer so the image paths resolve correctly.ProjectsCode · HTML DownloadProject1Image · PNG DownloadProject2Image · PNG DownloadProject3Image · PNG DownloadDownload allYou said: can i get the projects.can i get the projects.html in code7:15 PMClaude responded: Here's the full code:Here's the full code:
+html<body>
+<div id="wrapper">
+    <div id="leftcolumn">
+        <h3>Links</h3>
+        <a href="index.html">Home</a>
+        <a href="projects.html">Projects</a>
+        <a href="resume.html">Resume</a>
+        <a href="etc.html">Etc</a>
+    </div>
+    <div id="content">
+        <h1>My Projects</h1>
+        <div class="projects-container">
+            <div class="project-card">
+                <img src="project2.png" alt="Flask Cohere Chatbot screenshot" style="width:100%; border-radius:6px; margin-bottom:12px;">
+                <h3>Flask Cohere Chatbot</h3>
+                <p>A simple web-based chatbot built with Flask and powered by the Cohere AI API. Users can ask questions through a browser interface and receive AI-generated responses
+                   rendered in formatted Markdown.</p>                
+                <a href="https://github.com/hoomanv3xo/Chatbot">View Project</a>
+            </div>
+            <div class="project-card">
+                <img src="project3.png" alt="Diabetes Prediction System screenshot" style="width:100%; border-radius:6px; margin-bottom:12px;">
+                <h3>Diabetes Prediction System</h3>
+                <p>A machine learning web application that predicts the risk of diabetes based on patient health metrics. Built with Streamlit and a Random Forest Classifier trained on the
+                   Pima Indians Diabetes dataset.</p>
+                <a href="https://github.com/hoomanv3xo/Diabetes-Prediction-System">View Project</a>
+            </div>
+            <div class="project-card">
+                <img src="project1.png" alt="Stock Portfolio screenshot" style="width:100%; border-radius:6px; margin-bottom:12px;">
+                <h3>Stock Portfolio</h3>
+                <p>A simple Flask web application for tracking stock purchases. Users can add stocks by entering a symbol, number of shares, and purchase price, then view them in a 
+                   portfolio table.</p>
+                <a href="https://github.com/hoomanv3xo/Stocks-Portfolio/tree/main">View Project</a>
+            </div>
+        </div>
+    </div>
 </div>
 </body>
 </html>
-
