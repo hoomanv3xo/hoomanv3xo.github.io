@@ -9,7 +9,7 @@
 body {
     font-family: Verdana, Arial, Helvetica, sans-serif;
     color: #fff;
-    background: #000;
+    background-image: url('starx.gif');
     overflow-x: hidden;
 }
 
