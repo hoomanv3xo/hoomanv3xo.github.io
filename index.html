@@ -1,10 +1,22 @@
-
 <!doctype html>
 <html lang="en">
 <head>
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width,initial-scale=1">
   <title>Hooman Vahdat — Software Developer</title>
+  <meta name="description" content="Hooman Vahdat is a Toronto-based software developer building web apps, ML tools, and dashboards with Python, Flask, SQL, and Java.">
+
+  <meta property="og:type" content="website">
+  <meta property="og:title" content="Hooman Vahdat — Software Developer">
+  <meta property="og:description" content="Turning complex problems into simple tools. Web apps, bots, and dashboards built with Python, SQL, Java, and more.">
+  <meta property="og:image" content="project1.png">
+
+  <meta name="twitter:card" content="summary_large_image">
+  <meta name="twitter:title" content="Hooman Vahdat — Software Developer">
+  <meta name="twitter:description" content="Turning complex problems into simple tools. Web apps, bots, and dashboards built with Python, SQL, Java, and more.">
+  <meta name="twitter:image" content="project1.png">
+
+  <link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'%3E%3Crect width='100' height='100' rx='20' fill='%2318171c'/%3E%3Ctext x='50' y='68' font-size='60' font-family='Georgia,serif' fill='%23caff43' text-anchor='middle'%3EH%3C/text%3E%3C/svg%3E">
 
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
@@ -108,6 +120,14 @@
       text-decoration: underline;
     }
 
+    .menu-toggle {
+      display: none;
+    }
+
+    .hamburger {
+      display: none;
+    }
+
     .open {
       color: #168649;
     }
@@ -175,6 +195,12 @@
 
     @keyframes spin {
       to { transform: rotate(360deg); }
+    }
+
+    @media (prefers-reduced-motion: reduce) {
+      .star {
+        animation: none;
+      }
     }
 
     /* ============================================================
@@ -474,9 +500,48 @@
         padding: 0 18px;
       }
 
-      .links a:not(:last-child),
       .open {
         display: none;
+      }
+
+      .menu-toggle {
+        position: absolute;
+        opacity: 0;
+        pointer-events: none;
+      }
+
+      .hamburger {
+        display: block;
+        font-size: 20px;
+        line-height: 1;
+        cursor: pointer;
+        user-select: none;
+      }
+
+      .links {
+        display: none;
+        position: absolute;
+        top: 72px;
+        left: 0;
+        right: 0;
+        flex-direction: column;
+        gap: 0;
+        background: var(--paper);
+        border-bottom: 1px solid var(--ink);
+        z-index: 5;
+      }
+
+      .links a {
+        padding: 16px 18px;
+        border-top: 1px solid var(--ink);
+      }
+
+      .menu-toggle:checked ~ .links {
+        display: flex;
+      }
+
+      .menu-toggle:checked ~ .hamburger {
+        transform: rotate(90deg);
       }
 
       .hero {
@@ -550,7 +615,9 @@
          NAVIGATION
          ============================================================ -->
     <nav>
-      <a class="brand" href="#top"><b>↗</b>HOOMAN VAHDAT</a>
+      <a class="brand" href="#top"><b aria-hidden="true">↗</b>HOOMAN VAHDAT</a>
+      <input type="checkbox" id="menu-toggle" class="menu-toggle" aria-hidden="true">
+      <label for="menu-toggle" class="hamburger" aria-label="Toggle navigation menu">☰</label>
       <div class="links mono">
         <a href="#projects">Projects</a>
         <a href="#skills">Skills</a>
@@ -568,18 +635,19 @@
       <div class="eyebrow mono">Software Developer / Toronto, Canada</div>
 
       <div class="star">
-        <svg viewBox="0 0 100 100" style="width:100%;height:100%" aria-label="Code for the curious">
+        <svg viewBox="0 0 100 100" style="width:100%;height:100%" role="img" aria-label="Code for the curious">
           <defs>
             <path id="curious-circle" d="M50,50 m-37,0 a37,37 0 1,1 74,0 a37,37 0 1,1 -74,0" />
           </defs>
           <text style="font:8px DM Mono,monospace;letter-spacing:2px">
             <textPath href="#curious-circle">CODE FOR THE CURIOUS ✦ </textPath>
           </text>
+          <circle cx="50" cy="50" r="18" fill="var(--lime)" />
         </svg>
-        <b style="position:absolute;font-size:24px">✳</b>
+        <b style="position:absolute;font-size:24px" aria-hidden="true">✳</b>
       </div>
 
-      <h1>Building tools<br>that <em>work</em><br>beautifully.</h1>
+      <h1>Turning complex problems into<br><em>simple</em>tools.</h1>
 
       <p class="intro">
         I build web apps, bots, and dashboards with Python, SQL, Java, and whatever else a project demands.
@@ -594,7 +662,7 @@
       <div class="section-head">
         <div class="mono">01 / Selected projects</div>
         <div>
-          <h2>Things I've<br>actually shipped.</h2>
+          <h2>Things I've<br>actually built.</h2>
           <p>Practical software, data, and a few experiments made to be useful.</p>
         </div>
       </div>
@@ -605,7 +673,7 @@
           <div class="cardbody">
             <span class="number mono">01 / AI</span>
             <h3>Flask Cohere<br>Chatbot</h3>
-            <span class="arrow">↗</span>
+            <span class="arrow" aria-hidden="true">↗</span>
             <p>A browser chatbot built with Flask and the Cohere API, with formatted Markdown answers.</p>
             <div class="tags">
               <span class="tag">Flask</span>
@@ -619,7 +687,7 @@
           <div class="cardbody">
             <span class="number mono">02 / ML</span>
             <h3>Diabetes Prediction<br>System</h3>
-            <span class="arrow">↗</span>
+            <span class="arrow" aria-hidden="true">↗</span>
             <p>A machine-learning web app that estimates diabetes risk from patient health metrics.</p>
             <div class="tags">
               <span class="tag">Streamlit</span>
@@ -633,7 +701,7 @@
           <div class="cardbody">
             <span class="number mono">03 / WEB</span>
             <h3>Stocks<br>Portfolio</h3>
-            <span class="arrow">↗</span>
+            <span class="arrow" aria-hidden="true">↗</span>
             <p>A Flask app for recording stock purchases and viewing a live portfolio.</p>
             <div class="tags">
               <span class="tag">Flask</span>
@@ -647,7 +715,7 @@
           <div class="cardbody">
             <span class="number mono">04 / DATA</span>
             <h3>World Population<br>Dashboard</h3>
-            <span class="arrow">↗</span>
+            <span class="arrow" aria-hidden="true">↗</span>
             <p>A live country-level population dashboard built with Python, Dash, and Plotly.</p>
             <div class="tags">
               <span class="tag">Python</span>
@@ -661,7 +729,7 @@
           <div class="cardbody">
             <span class="number mono">05 / PLAY</span>
             <h3>Olympics Race<br>Simulator</h3>
-            <span class="arrow">↗</span>
+            <span class="arrow" aria-hidden="true">↗</span>
             <p>A sprint-race simulator with animated runners, country selection, and live timing.</p>
             <div class="tags">
               <span class="tag">JavaScript</span>
@@ -681,7 +749,7 @@
 
         <div class="aboutcopy">
           <p>
-            I'm Hooman, a <em>Toronto-based</em> software developer who enjoys shaping modern web applications
+            I'm Hooman, a <em>Toronto-based</em> software developer who enjoys creating modern web applications
             from thoughtful code and useful data.
           </p>
           <div class="facts mono">
@@ -700,7 +768,7 @@
       <div class="section-head">
         <div class="mono">03 / Technical toolkit</div>
         <div>
-          <h2>What I reach<br>for most.</h2>
+          <h2>Tools I reach<br>for most.</h2>
           <p>A flexible stack for web apps, machine learning, dashboards, and data work.</p>
         </div>
       </div>
@@ -788,3 +856,7 @@
   </main>
 </body>
 </html>
+
+
+
+    
