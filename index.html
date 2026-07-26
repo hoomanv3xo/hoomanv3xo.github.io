@@ -473,6 +473,10 @@
 
         <form action="https://formspree.io/f/mdavrgno" method="POST" id="contact-form"
               style="display:grid;gap:9px;max-width:590px;margin:0 0 9px">
+          <input type="hidden" name="_subject" value="New message from hoomanvahdat.dev">
+          <!-- honeypot: hidden from real users, bots tend to fill every field -->
+          <input type="text" name="_gotcha" tabindex="-1" autocomplete="off"
+                 style="position:absolute;left:-9999px;width:1px;height:1px;opacity:0" aria-hidden="true">
           <input required name="name" aria-label="Your name" placeholder="your_name"
                  style="font:12px Space Mono,monospace;padding:10px;border:1px solid #2c6043;background:#0d1c14;color:#d5ffe3">
           <input required type="email" name="email" aria-label="Your email" placeholder="your_email@domain.com"
@@ -509,6 +513,7 @@
       const button = form.querySelector("button");
       button.disabled = true;
       button.textContent = "sending...";
+      status.style.color = "#65ff95";
       status.textContent = "";
 
       try {
@@ -531,5 +536,5 @@
   </script>
 </body>
 </html>
-      
-         
+
+              
