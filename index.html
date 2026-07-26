@@ -3,860 +3,520 @@
 <head>
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width,initial-scale=1">
-  <title>Hooman Vahdat — Software Developer</title>
-  <meta name="description" content="Hooman Vahdat is a Toronto-based software developer building web apps, ML tools, and dashboards with Python, Flask, SQL, and Java.">
-
-  <meta property="og:type" content="website">
-  <meta property="og:title" content="Hooman Vahdat — Software Developer">
-  <meta property="og:description" content="Turning complex problems into simple tools. Web apps, bots, and dashboards built with Python, SQL, Java, and more.">
-  <meta property="og:image" content="project1.png">
-
-  <meta name="twitter:card" content="summary_large_image">
-  <meta name="twitter:title" content="Hooman Vahdat — Software Developer">
-  <meta name="twitter:description" content="Turning complex problems into simple tools. Web apps, bots, and dashboards built with Python, SQL, Java, and more.">
-  <meta name="twitter:image" content="project1.png">
-
-  <link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'%3E%3Crect width='100' height='100' rx='20' fill='%2318171c'/%3E%3Ctext x='50' y='68' font-size='60' font-family='Georgia,serif' fill='%23caff43' text-anchor='middle'%3EH%3C/text%3E%3C/svg%3E">
+  <title>Hooman Vahdat — Terminal</title>
 
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-  <link
-    href="https://fonts.googleapis.com/css2?family=DM+Mono&family=Playfair+Display:ital,wght@0,600;1,500&family=Space+Grotesk:wght@400;500;700&display=swap"
-    rel="stylesheet">
+  <link href="https://fonts.googleapis.com/css2?family=DM+Mono:wght@400;500&family=Space+Mono:wght@400;700&display=swap" rel="stylesheet">
 
   <style>
-    /* ============================================================
+    /* ==========================================================
        1. RESET & ROOT VARIABLES
-       ============================================================ */
+       ========================================================== */
     :root {
-      --ink: #18171c;
-      --paper: #f6f0e7;
-      --lime: #caff43;
-      --coral: #ff765d;
-      --violet: #aaa0ff;
-      --sky: #9bdfff;
+      --bg: #07100c;
+      --screen: #0d1c14;
+      --line: #2c6043;
+      --text: #d5ffe3;
+      --green: #65ff95;
+      --dim: #83ae91;
+      --amber: #ffc95b;
+      --red: #ff7568;
     }
 
-    * {
-      box-sizing: border-box;
-    }
+    * { box-sizing: border-box; }
+    html { scroll-behavior: smooth; }
+    a { color: inherit; text-decoration: none; }
 
     body {
       margin: 0;
-      background: var(--paper);
-      color: var(--ink);
-      font-family: "Space Grotesk", sans-serif;
+      background: #030705;
+      color: var(--text);
+      font: 14px/1.5 'Space Mono', monospace;
     }
 
-    a {
-      color: inherit;
-      text-decoration: none;
+    /* ==========================================================
+       2. TERMINAL WINDOW SHELL
+       ========================================================== */
+    .terminal {
+      max-width: 1280px;
+      margin: 25px auto;
+      border: 1px solid var(--line);
+      background: var(--bg);
+      box-shadow: 0 0 0 1px #0b2616, 0 0 60px #1ad15a18;
+      position: relative;
+      overflow: hidden;
     }
 
-    h1, h2, h3 {
-      font-family: "Playfair Display", serif;
-      margin: 0;
+    /* subtle CRT scanline overlay */
+    .terminal:after {
+      content: "";
+      position: absolute;
+      inset: 0;
+      pointer-events: none;
+      background: repeating-linear-gradient(
+        0deg,
+        #ffffff05 0,
+        #ffffff05 1px,
+        transparent 1px,
+        transparent 4px
+      );
+      mix-blend-mode: screen;
     }
 
-    /* ============================================================
-       2. SHARED UTILITY CLASSES
-       ============================================================ */
-    .mono {
-      font: 11px "DM Mono", monospace;
-      letter-spacing: .05em;
-      text-transform: uppercase;
-    }
-
-    .page {
-      background-image:
-        linear-gradient(#18171c18 1px, transparent 1px),
-        linear-gradient(90deg, #18171c18 1px, transparent 1px);
-      background-size: 32px 32px;
-    }
-
-    em {
-      color: var(--coral);
-      font-weight: 500;
-    }
-
-    /* ============================================================
-       3. NAVIGATION
-       ============================================================ */
-    nav {
-      height: 72px;
-      padding: 0 4vw;
+    .bar {
+      height: 39px;
+      background: #11271a;
+      border-bottom: 1px solid var(--line);
       display: flex;
       align-items: center;
       justify-content: space-between;
-      border-bottom: 1px solid var(--ink);
-      background: #f6f0e7e8;
-      backdrop-filter: blur(8px);
-      position: sticky;
-      top: 0;
-      z-index: 4;
+      padding: 0 13px;
+      color: var(--dim);
+      font: 11px DM Mono, monospace;
     }
 
-    .brand {
-      font-weight: 700;
-    }
-
-    .brand b {
-      display: inline-grid;
-      place-items: center;
-      width: 21px;
-      height: 21px;
-      margin-right: 5px;
+    .lights { display: flex; gap: 6px; }
+    .lights i {
+      width: 10px;
+      height: 10px;
+      border: 1px solid #07100c;
       border-radius: 50%;
-      background: var(--ink);
-      color: var(--lime);
+      background: var(--red);
     }
+    .lights i:nth-child(2) { background: var(--amber); }
+    .lights i:nth-child(3) { background: var(--green); }
 
-    .links {
+    .shell { padding: 0 34px; }
+
+    .mono { font: 11px DM Mono, monospace; letter-spacing: .04em; }
+    .prompt { color: var(--green); }
+    .command { color: var(--amber); }
+
+    /* ==========================================================
+       3. NAVIGATION
+       ========================================================== */
+    nav {
       display: flex;
-      gap: 22px;
+      justify-content: space-between;
+      align-items: center;
+      padding: 17px 0;
+      border-bottom: 1px dashed var(--line);
     }
 
-    .links a:hover {
-      text-decoration: underline;
-    }
+    .brand { font-size: 16px; font-weight: 700; }
 
-    .menu-toggle {
-      display: none;
-    }
+    .navlinks { display: flex; gap: 20px; color: var(--dim); }
+    .navlinks a:hover { color: var(--green); }
 
-    .hamburger {
-      display: none;
-    }
+    .online { color: var(--green); }
 
-    .open {
-      color: #168649;
-    }
-
-    .open:before {
-      content: "● ";
-      font-size: 13px;
-    }
-
-    /* ============================================================
-       4. HERO SECTION
-       ============================================================ */
+    /* ==========================================================
+       4. HERO
+       ========================================================== */
     .hero {
-      min-height: 72vh;
-      padding: 10vw 9vw;
-      position: relative;
+      padding: 70px 0 62px;
+      border-bottom: 1px dashed var(--line);
     }
 
-    .eyebrow {
-      margin-bottom: 24px;
+    .pre { color: var(--dim); font-size: 12px; }
+
+    .hero h1 {
+      font-size: clamp(35px, 6vw, 78px);
+      letter-spacing: -.09em;
+      line-height: .92;
+      margin: 13px 0 22px;
+      color: var(--green);
     }
 
-    .eyebrow:before {
-      content: "";
+    .hero p {
+      max-width: 710px;
+      color: #bfddc8;
+      font-size: 15px;
+    }
+
+    .cursor {
       display: inline-block;
-      width: 50px;
-      height: 1px;
-      background: var(--ink);
-      vertical-align: middle;
-      margin-right: 12px;
+      width: 10px;
+      height: 19px;
+      background: var(--green);
+      vertical-align: -2px;
+      animation: blink .8s steps(1) infinite;
     }
+    @keyframes blink { 50% { opacity: 0; } }
 
-    h1 {
-      font-size: clamp(65px, 11vw, 155px);
-      letter-spacing: -.08em;
-      line-height: .81;
+    .run {
+      display: inline-block;
+      margin-top: 16px;
+      border: 1px solid var(--green);
+      padding: 9px 12px;
+      color: var(--green);
+      font-size: 12px;
     }
+    .run:hover { background: var(--green); color: var(--bg); }
 
-    .intro {
-      max-width: 440px;
-      margin: 48px 0 0 auto;
-      font-size: 17px;
-      line-height: 1.45;
-    }
-
-    .intro strong {
-      background: var(--lime);
-      font-weight: 500;
-      padding: 0 4px;
-    }
-
-    .star {
-      position: absolute;
-      right: 10vw;
-      top: 14%;
-      display: grid;
-      place-items: center;
-      border: 1px solid var(--ink);
-      border-radius: 50%;
-      width: 100px;
-      height: 100px;
-      font-size: 27px;
-      animation: spin 13s linear infinite;
-    }
-
-    @keyframes spin {
-      to { transform: rotate(360deg); }
-    }
-
-    @media (prefers-reduced-motion: reduce) {
-      .star {
-        animation: none;
-      }
-    }
-
-    /* ============================================================
-       5. SECTION HEADERS (shared across Projects / Skills / Background)
-       ============================================================ */
+    /* ==========================================================
+       5. SECTIONS (shared)
+       ========================================================== */
     section {
-      padding: 0 4vw 70px;
-      border-top: 1px solid var(--ink);
+      padding: 27px 0 55px;
+      border-bottom: 1px dashed var(--line);
     }
+    .section-title { color: var(--dim); margin-bottom: 22px; }
 
-    .section-head {
+    /* ==========================================================
+       6. PROJECTS GRID
+       ========================================================== */
+    .grid {
       display: grid;
-      grid-template-columns: 1fr 3fr;
-      padding: 18px 0 30px;
-    }
-
-    .section-head h2 {
-      font-size: clamp(37px, 5vw, 68px);
-      letter-spacing: -.07em;
-      line-height: .9;
-    }
-
-    .section-head p {
-      max-width: 390px;
-      margin: 8px 0 0 auto;
-      line-height: 1.4;
-    }
-
-    /* ============================================================
-       6. PROJECT CARDS
-       ============================================================ */
-    .cards {
-      display: grid;
-      grid-template-columns: repeat(2, minmax(0, 1fr));
-      gap: 22px;
+      grid-template-columns: repeat(2, 1fr);
+      gap: 14px;
     }
 
     .project {
+      border: 1px solid var(--line);
+      background: var(--screen);
       display: flex;
       flex-direction: column;
-      border: 1px solid var(--ink);
-      background: var(--paper);
-      transition: .22s;
+      transition: .2s;
     }
-
     .project:hover {
-      transform: translate(-4px, -4px);
-      box-shadow: 7px 7px 0 var(--ink);
+      border-color: var(--green);
+      box-shadow: 0 0 20px #65ff951f;
     }
 
-    .preview {
-      height: 135px;
-      overflow: hidden;
-      border-bottom: 1px solid var(--ink);
-      background: #1c1c22;
-    }
-
-    .preview img {
-      display: block;
+    .project img {
       width: 100%;
-      height: 100%;
+      height: 137px;
       object-fit: cover;
       object-position: top;
-      transition: .35s;
-    }
-
-    .project:hover img {
-      transform: scale(1.04);
-    }
-
-    .cardbody {
-      padding: 18px;
-      display: grid;
-      grid-template-columns: 53px 1fr 38px;
-      gap: 10px;
-      align-items: start;
-    }
-
-    .number {
-      color: #77726c;
-    }
-
-    .cardbody h3 {
-      font-size: clamp(26px, 3vw, 41px);
-      font-weight: 500;
-      letter-spacing: -.06em;
-      line-height: .94;
-    }
-
-    .arrow {
-      display: grid;
-      place-items: center;
-      width: 37px;
-      height: 37px;
-      border: 1px solid var(--ink);
-      border-radius: 50%;
-      font-size: 19px;
-    }
-
-    .project:hover .arrow {
-      background: var(--lime);
-      transform: rotate(-45deg);
-    }
-
-    .cardbody p {
-      grid-column: 2/4;
-      margin: 4px 0;
-      font-size: 14px;
-      line-height: 1.45;
-    }
-
-    .tags {
-      grid-column: 2/3;
-      display: flex;
-      flex-wrap: wrap;
-      gap: 5px;
-      margin-top: 8px;
-    }
-
-    .tag {
-      font: 10px "DM Mono", monospace;
-      padding: 4px 7px;
-      border: 1px solid var(--ink);
-      border-radius: 16px;
-    }
-
-    /* ============================================================
-       7. ABOUT SECTION
-       ============================================================ */
-    .about {
-      background: var(--violet);
-    }
-
-    .aboutgrid {
-      display: grid;
-      grid-template-columns: 1fr 2.1fr;
-      min-height: 390px;
-    }
-
-    .aboutgrid > * {
-      padding: 35px 0;
-    }
-
-    .aboutcopy {
-      border-left: 1px solid var(--ink);
-      padding-left: 4vw !important;
-      display: flex;
-      flex-direction: column;
-      justify-content: space-between;
-    }
-
-    .aboutcopy p {
-      font: clamp(32px, 4vw, 59px) / .99 "Playfair Display", serif;
-      letter-spacing: -.065em;
-      margin: 0;
-    }
-
-    .aboutcopy em {
-      color: var(--paper);
-    }
-
-    .facts {
-      display: flex;
-      gap: 7px;
-      flex-wrap: wrap;
-    }
-
-    .facts span {
-      background: var(--paper);
-      padding: 10px 12px;
-    }
-
-    /* ============================================================
-       8. SKILLS SECTION
-       ============================================================ */
-    .skills {
-      background: var(--sky);
-    }
-
-    .skillslist {
-      padding-top: 28px;
-      border-top: 1px solid var(--ink);
-      display: flex;
-      flex-wrap: wrap;
-      gap: 9px;
-    }
-
-    .skill {
-      padding: 10px 15px;
-      border: 1px solid var(--ink);
-      background: var(--paper);
-      border-radius: 99px;
-      font-weight: 700;
-      box-shadow: 3px 3px 0 var(--ink);
-    }
-
-    /* ============================================================
-       9. BACKGROUND / RESUME SECTION
-       ============================================================ */
-    .resume {
-      display: grid;
-      grid-template-columns: 1fr 1fr;
-      border: 1px solid var(--ink);
-      background: var(--paper);
-    }
-
-    .resume > div {
-      padding: 28px;
-    }
-
-    .resume > div + div {
-      border-left: 1px solid var(--ink);
-    }
-
-    .resume h3 {
-      font-size: 29px;
-      margin-bottom: 17px;
-    }
-
-    .resume p,
-    .resume li {
-      font-size: 14px;
-      line-height: 1.45;
-    }
-
-    .timeline {
-      border-left: 1px solid var(--ink);
-      padding-left: 18px;
-    }
-
-    .timeline div {
-      position: relative;
-      margin: 0 0 18px;
-    }
-
-    .timeline div:before {
-      content: "";
-      width: 9px;
-      height: 9px;
-      border: 1px solid var(--ink);
-      background: var(--coral);
-      border-radius: 50%;
-      position: absolute;
-      left: -24px;
-      top: 2px;
-    }
-
-    .timeline b {
       display: block;
-      margin: 5px 0;
+      filter: grayscale(1) contrast(1.2) sepia(.3) hue-rotate(70deg) saturate(1.2);
+      opacity: .85;
+      border-bottom: 1px solid var(--line);
+    }
+    .project:hover img { filter: none; opacity: 1; }
+
+    .project-body { padding: 15px; }
+    .project h3 { font-size: 17px; margin: 7px 0; color: var(--green); }
+    .project p {
+      font-size: 12px;
+      color: #b4cdbc;
+      margin: 0;
+      line-height: 1.5;
     }
 
-    /* ============================================================
-       10. CONTACT SECTION & FOOTER
-       ============================================================ */
-    .contact {
-      min-height: 390px;
-      background: var(--lime);
+    .project-footer {
       display: flex;
-      flex-direction: column;
       justify-content: space-between;
+      align-items: center;
+      margin-top: 13px;
+      color: var(--amber);
+      font-size: 11px;
     }
 
-    .contacttop {
-      padding-top: 19px;
+    .badge {
+      border: 1px solid var(--line);
+      padding: 2px 5px;
+      color: var(--dim);
+      font: 9px DM Mono;
     }
 
+    /* ==========================================================
+       7. PROFILE / INFO BOXES
+       ========================================================== */
+    .info {
+      display: grid;
+      grid-template-columns: 1.1fr 1fr;
+      gap: 14px;
+    }
+
+    .box {
+      border: 1px solid var(--line);
+      background: var(--screen);
+      padding: 19px;
+    }
+    .box h2 { color: var(--green); font-size: 17px; margin: 0 0 12px; }
+    .box p, .box li { font-size: 12px; color: #c4dccb; line-height: 1.65; }
+    .box ul { margin: 0; padding-left: 18px; }
+
+    .skills { display: flex; flex-wrap: wrap; gap: 7px; }
+    .skills span {
+      border: 1px solid var(--line);
+      padding: 6px 8px;
+      color: var(--amber);
+      font-size: 11px;
+    }
+
+    .timeline { border-left: 1px dashed var(--line); padding-left: 16px; }
+    .timeline div { position: relative; margin-bottom: 16px; }
+    .timeline div:before {
+      content: "+";
+      position: absolute;
+      left: -23px;
+      top: -3px;
+      color: var(--green);
+    }
+    .timeline b { color: var(--green); }
+
+    /* ==========================================================
+       8. CONTACT
+       ========================================================== */
+    .contact { padding: 35px 0; }
     .contact h2 {
-      font-size: clamp(55px, 9vw, 136px);
-      line-height: .82;
+      font-size: clamp(29px, 5vw, 60px);
       letter-spacing: -.08em;
-      font-weight: 500;
-      margin: 50px 0;
+      line-height: .95;
+      color: var(--green);
+      margin: 11px 0 25px;
     }
+    .contact h2 a { color: var(--amber); }
 
-    .contact h2 a {
-      border-bottom: 5px solid var(--ink);
-    }
-
+    /* ==========================================================
+       9. FOOTER
+       ========================================================== */
     footer {
-      border-top: 1px solid var(--ink);
-      padding: 20px 0;
       display: flex;
       justify-content: space-between;
+      border-top: 1px dashed var(--line);
+      padding: 16px 0;
+      color: var(--dim);
+      font: 10px DM Mono;
     }
 
-    .socials {
-      display: flex;
-      gap: 16px;
-    }
-
-    /* ============================================================
-       11. RESPONSIVE / MOBILE
-       ============================================================ */
+    /* ==========================================================
+       10. RESPONSIVE
+       ========================================================== */
     @media (max-width: 700px) {
-      nav {
-        padding: 0 18px;
-      }
-
-      .open {
-        display: none;
-      }
-
-      .menu-toggle {
-        position: absolute;
-        opacity: 0;
-        pointer-events: none;
-      }
-
-      .hamburger {
-        display: block;
-        font-size: 20px;
-        line-height: 1;
-        cursor: pointer;
-        user-select: none;
-      }
-
-      .links {
-        display: none;
-        position: absolute;
-        top: 72px;
-        left: 0;
-        right: 0;
-        flex-direction: column;
-        gap: 0;
-        background: var(--paper);
-        border-bottom: 1px solid var(--ink);
-        z-index: 5;
-      }
-
-      .links a {
-        padding: 16px 18px;
-        border-top: 1px solid var(--ink);
-      }
-
-      .menu-toggle:checked ~ .links {
-        display: flex;
-      }
-
-      .menu-toggle:checked ~ .hamburger {
-        transform: rotate(90deg);
-      }
-
-      .hero {
-        padding: 27vw 23px 50px;
-        min-height: 650px;
-      }
-
-      h1 {
-        font-size: clamp(57px, 17vw, 98px);
-      }
-
-      .star {
-        right: 23px;
-        top: 16%;
-        transform: scale(.7);
-      }
-
-      section {
-        padding-left: 18px;
-        padding-right: 18px;
-      }
-
-      .section-head,
-      .aboutgrid,
-      .resume {
-        grid-template-columns: 1fr;
-      }
-
-      .section-head {
-        gap: 14px;
-      }
-
-      .section-head p {
-        margin: 0;
-      }
-
-      .cards {
-        grid-template-columns: 1fr;
-      }
-
-      .aboutcopy,
-      .resume > div + div {
-        border-left: 0;
-        border-top: 1px solid var(--ink);
-        padding-left: 0 !important;
-      }
-
-      .resume > div {
-        padding: 24px 0;
-      }
-
-      .aboutcopy p {
-        font-size: 39px;
-      }
-
-      footer {
-        font-size: 9px;
-      }
-
-      .socials {
-        gap: 9px;
-      }
+      .terminal { margin: 0; border-left: 0; border-right: 0; }
+      .shell { padding: 0 17px; }
+      .navlinks a:not(:last-child), .online { display: none; }
+      .hero { padding: 50px 0; }
+      .grid, .info { grid-template-columns: 1fr; }
+      .project img { height: 120px; }
+      footer { font-size: 8px; gap: 8px; }
     }
   </style>
 </head>
 
 <body>
-  <main class="page">
+  <main class="terminal">
 
-    <!-- ============================================================
-         NAVIGATION
-         ============================================================ -->
-    <nav>
-      <a class="brand" href="#top"><b aria-hidden="true">↗</b>HOOMAN VAHDAT</a>
-      <input type="checkbox" id="menu-toggle" class="menu-toggle" aria-hidden="true">
-      <label for="menu-toggle" class="hamburger" aria-label="Toggle navigation menu">☰</label>
-      <div class="links mono">
-        <a href="#projects">Projects</a>
-        <a href="#skills">Skills</a>
-        <a href="#about">About</a>
-        <a href="HoomanVahdat_SoftwareDeveloperResume.pdf" target="_blank" rel="noopener">Resume</a>
-        <a href="#contact">Contact</a>
-      </div>
-      <span class="open mono">Open to work</span>
-    </nav>
+    <!-- ============ TOP BAR ============ -->
+    <div class="bar">
+      <span>hooman@portfolio: ~/projects</span>
+      <span class="lights"><i></i><i></i><i></i></span>
+    </div>
 
-    <!-- ============================================================
-         HERO
-         ============================================================ -->
-    <header class="hero" id="top">
-      <div class="eyebrow mono">Software Developer / Toronto, Canada</div>
+    <div class="shell">
 
-      <div class="star">
-        <svg viewBox="0 0 100 100" style="width:100%;height:100%" role="img" aria-label="Code for the curious">
-          <defs>
-            <path id="curious-circle" d="M50,50 m-37,0 a37,37 0 1,1 74,0 a37,37 0 1,1 -74,0" />
-          </defs>
-          <text style="font:8px DM Mono,monospace;letter-spacing:2px">
-            <textPath href="#curious-circle">CODE FOR THE CURIOUS ✦ </textPath>
-          </text>
-          <circle cx="50" cy="50" r="18" fill="var(--lime)" />
-        </svg>
-        <b style="position:absolute;font-size:24px" aria-hidden="true">✳</b>
-      </div>
-
-      <h1>Turning complex problems into <br><em> simple</em> tools.</h1>
-
-      <p class="intro">
-        I build web apps, bots, and dashboards with Python, SQL, Java, and whatever else a project demands.
-        <strong>Currently pursuing an M.Sc. in Data Science.</strong>
-      </p>
-    </header>
-
-    <!-- ============================================================
-         PROJECTS
-         ============================================================ -->
-    <section id="projects">
-      <div class="section-head">
-        <div class="mono">01 / Selected projects</div>
-        <div>
-          <h2>Things I've<br>actually built.</h2>
-          <p>Practical software, data, and a few experiments made to be useful.</p>
+      <!-- ============ NAVIGATION ============ -->
+      <nav>
+        <a class="brand" href="#top"><span class="prompt">root@hooman</span>:~$ whoami</a>
+        <div class="navlinks mono">
+          <a href="#projects">/projects</a>
+          <a href="#profile">/profile</a>
+          <a href="#contact">/contact</a>
         </div>
-      </div>
+        <span class="online mono">● accepting work</span>
+      </nav>
 
-      <div class="cards">
-        <a class="project" href="https://github.com/hoomanv3xo/Chatbot" target="_blank">
-          <div class="preview"><img src="project1.png" alt="Flask Cohere Chatbot"></div>
-          <div class="cardbody">
-            <span class="number mono">01 / AI</span>
-            <h3>Flask Cohere<br>Chatbot</h3>
-            <span class="arrow" aria-hidden="true">↗</span>
-            <p>A browser chatbot built with Flask and the Cohere API, with formatted Markdown answers.</p>
-            <div class="tags">
-              <span class="tag">Flask</span>
-              <span class="tag">Cohere API</span>
+      <!-- ============ HERO ============ -->
+      <header class="hero" id="top">
+        <div class="pre"><span class="prompt">root@hooman</span>:~$ cat introduction.txt</div>
+
+        <figure style="float:right;width:180px;margin:0 0 18px 26px;border:1px solid #65ff95;padding:6px;background:#07100c">
+          <img src="hooman-portrait.jpg" alt="Portrait of Hooman Vahdat"
+               style="display:block;width:100%;height:180px;object-fit:cover;filter:grayscale(1) contrast(1.15) sepia(.3) hue-rotate(70deg)">
+          <figcaption style="margin-top:6px;color:#65ff95;font:9px DM Mono,monospace">identity.jpg</figcaption>
+        </figure>
+
+        <h1>Hooman Vahdat<span class="cursor"></span></h1>
+        <p>Software developer based in Toronto. I build web apps, bots, and dashboards with Python, SQL, Java, and the right tool for the job. Currently pursuing an M.Sc. in Data Science.</p>
+        <a class="run" href="#projects">./open_project_log.sh →</a>
+      </header>
+
+      <!-- ============ PROJECTS ============ -->
+      <section id="projects">
+        <div class="section-title mono"><span class="prompt">root@hooman</span>:~$ ls ./selected-projects --verbose</div>
+
+        <div class="grid">
+
+          <a class="project" href="https://github.com/hoomanv3xo/Chatbot" target="_blank">
+            <img src="project1.png" alt="Chatbot">
+            <div class="project-body">
+              <span class="badge">01 / AI</span>
+              <h3>Flask Cohere Chatbot</h3>
+              <p>Browser chatbot powered by Flask and the Cohere AI API with Markdown responses.</p>
+              <div class="project-footer">
+                <span>Flask · Cohere API</span>
+                <span>OPEN ↗</span>
+              </div>
+            </div>
+          </a>
+
+          <a class="project" href="https://github.com/hoomanv3xo/Diabetes-Prediction-System" target="_blank">
+            <img src="project2.png" alt="Diabetes Prediction System">
+            <div class="project-body">
+              <span class="badge">02 / ML</span>
+              <h3>Diabetes Prediction System</h3>
+              <p>Machine learning app that estimates diabetes risk from patient health metrics.</p>
+              <div class="project-footer">
+                <span>Streamlit · scikit-learn</span>
+                <span>OPEN ↗</span>
+              </div>
+            </div>
+          </a>
+
+          <a class="project" href="https://github.com/hoomanv3xo/Stocks-Portfolio" target="_blank">
+            <img src="project3.png" alt="Stocks Portfolio">
+            <div class="project-body">
+              <span class="badge">03 / WEB</span>
+              <h3>Stocks Portfolio</h3>
+              <p>Flask application for recording stock purchases and tracking portfolio value.</p>
+              <div class="project-footer">
+                <span>Flask · Python</span>
+                <span>OPEN ↗</span>
+              </div>
+            </div>
+          </a>
+
+          <a class="project" href="https://github.com/hoomanv3xo/World-Population-Dashboard" target="_blank">
+            <img src="project4.png" alt="World Population Dashboard">
+            <div class="project-body">
+              <span class="badge">04 / DATA</span>
+              <h3>World Population Dashboard</h3>
+              <p>Live country-level dashboard with interactive global population visualizations.</p>
+              <div class="project-footer">
+                <span>Python · Dash · Plotly</span>
+                <span>OPEN ↗</span>
+              </div>
+            </div>
+          </a>
+
+          <a class="project" href="https://github.com/hoomanv3xo" target="_blank">
+            <img src="project5.png" alt="Olympics Race Simulator">
+            <div class="project-body">
+              <span class="badge">05 / PLAY</span>
+              <h3>Olympics Race Simulator</h3>
+              <p>Animated sprint race simulator with live timers and country selection.</p>
+              <div class="project-footer">
+                <span>JavaScript · HTML/CSS</span>
+                <span>OPEN ↗</span>
+              </div>
+            </div>
+          </a>
+
+        </div>
+      </section>
+
+      <!-- ============ PROFILE ============ -->
+      <section id="profile">
+        <div class="section-title mono"><span class="prompt">root@hooman</span>:~$ cat profile.json</div>
+
+        <div class="info">
+
+          <div class="box">
+            <h2>"about": {</h2>
+            <p>
+              "location": "Toronto, Canada",<br>
+              "role": "Software Developer",<br>
+              "status": "Open to freelance and full-time roles"
+            </p>
+            <h2>"toolkit": [</h2>
+            <div class="skills">
+              <span>Python</span>
+              <span>Flask</span>
+              <span>Django</span>
+              <span>SQL</span>
+              <span>JavaScript</span>
+              <span>Java</span>
+              <span>HTML/CSS</span>
+              <span>Visual Basic</span>
+              <span>Bootstrap</span>
+              <span>Git</span>
+              <span>GitHub</span>
             </div>
           </div>
-        </a>
 
-        <a class="project" href="https://github.com/hoomanv3xo/Diabetes-Prediction-System" target="_blank">
-          <div class="preview"><img src="project2.png" alt="Diabetes Prediction System"></div>
-          <div class="cardbody">
-            <span class="number mono">02 / ML</span>
-            <h3>Diabetes Prediction<br>System</h3>
-            <span class="arrow" aria-hidden="true">↗</span>
-            <p>A machine-learning web app that estimates diabetes risk from patient health metrics.</p>
-            <div class="tags">
-              <span class="tag">Streamlit</span>
-              <span class="tag">scikit-learn</span>
+          <div class="box">
+            <h2>"education": [</h2>
+            <div class="timeline">
+              <div><b>2026 — Present</b><br>M.Sc. Data Science<br>University of Colorado Boulder</div>
+              <div><b>2013 — 2016</b><br>University Certificate<br>Toronto Metropolitan University</div>
+              <div><b>Credentials</b><br>Harvard CS for Web Programming<br>Big SQL Energy</div>
             </div>
+            <p>]</p>
           </div>
-        </a>
 
-        <a class="project" href="https://github.com/hoomanv3xo/Stocks-Portfolio" target="_blank">
-          <div class="preview"><img src="project3.png" alt="Stocks Portfolio"></div>
-          <div class="cardbody">
-            <span class="number mono">03 / WEB</span>
-            <h3>Stocks<br>Portfolio</h3>
-            <span class="arrow" aria-hidden="true">↗</span>
-            <p>A Flask app for recording stock purchases and viewing a live portfolio.</p>
-            <div class="tags">
-              <span class="tag">Flask</span>
-              <span class="tag">Python</span>
-            </div>
-          </div>
-        </a>
-
-        <a class="project" href="https://github.com/hoomanv3xo/World-Population-Dashboard" target="_blank">
-          <div class="preview"><img src="project4.png" alt="World Population Dashboard"></div>
-          <div class="cardbody">
-            <span class="number mono">04 / DATA</span>
-            <h3>World Population<br>Dashboard</h3>
-            <span class="arrow" aria-hidden="true">↗</span>
-            <p>A live country-level population dashboard built with Python, Dash, and Plotly.</p>
-            <div class="tags">
-              <span class="tag">Python</span>
-              <span class="tag">Dash + Plotly</span>
-            </div>
-          </div>
-        </a>
-
-        <a class="project" href="https://github.com/hoomanv3xo" target="_blank">
-          <div class="preview"><img src="project5.png" alt="Olympics Race Simulator"></div>
-          <div class="cardbody">
-            <span class="number mono">05 / PLAY</span>
-            <h3>Olympics Race<br>Simulator</h3>
-            <span class="arrow" aria-hidden="true">↗</span>
-            <p>A sprint-race simulator with animated runners, country selection, and live timing.</p>
-            <div class="tags">
-              <span class="tag">JavaScript</span>
-              <span class="tag">HTML/CSS</span>
-            </div>
-          </div>
-        </a>
-      </div>
-    </section>
-
-    <!-- ============================================================
-         ABOUT
-         ============================================================ -->
-    <section class="about" id="about">
-      <div class="aboutgrid">
-        <div class="mono">02 / About Hooman</div>
-
-        <div class="aboutcopy">
-          <p>
-            I'm Hooman, a <em>Toronto-based</em> software developer who enjoys creating modern web applications
-            from thoughtful code and useful data.
-          </p>
-          <div class="facts mono">
-            <span>✦ M.Sc. Data Science, in progress</span>
-            <span>✦ Python · SQL · Java</span>
-            <span>✦ Freelance + full-time roles</span>
-          </div>
         </div>
-      </div>
-    </section>
+      </section>
 
-    <!-- ============================================================
-         SKILLS
-         ============================================================ -->
-    <section class="skills" id="skills">
-      <div class="section-head">
-        <div class="mono">03 / Technical toolkit</div>
-        <div>
-          <h2>Tools I reach<br>for most.</h2>
-          <p>A flexible stack for web apps, machine learning, dashboards, and data work.</p>
-        </div>
-      </div>
+      <!-- ============ CONTACT ============ -->
+      <section class="contact" id="contact">
+        <div class="mono"><span class="prompt">root@hooman</span>:~$ ./start-conversation</div>
 
-      <div class="skillslist">
-        <span class="skill">Python</span>
-        <span class="skill">Flask</span>
-        <span class="skill">Django</span>
-        <span class="skill">HTML5</span>
-        <span class="skill">CSS3</span>
-        <span class="skill">JavaScript</span>
-        <span class="skill">SQL</span>
-        <span class="skill">Java</span>
-        <span class="skill">Visual Basic</span>
-        <span class="skill">Bootstrap</span>
-        <span class="skill">Git</span>
-        <span class="skill">GitHub</span>
-      </div>
-    </section>
+        <h2>Ready when you are.<br><a href="mailto:hoomanv3@gmail.com">hoomanv3@gmail.com ↗</a></h2>
 
-    <!-- ============================================================
-         BACKGROUND / EDUCATION & CERTIFICATIONS
-         ============================================================ -->
-    <section>
-      <div class="section-head">
-        <div class="mono">04 / Background</div>
-        <div>
-          <h2>Education &<br>credentials.</h2>
-          <p>The foundations behind the work.</p>
-        </div>
-      </div>
+        <form action="https://formspree.io/f/mdavrgno" method="POST" id="contact-form"
+              style="display:grid;gap:9px;max-width:590px;margin:0 0 9px">
+          <input required name="name" aria-label="Your name" placeholder="your_name"
+                 style="font:12px Space Mono,monospace;padding:10px;border:1px solid #2c6043;background:#0d1c14;color:#d5ffe3">
+          <input required type="email" name="email" aria-label="Your email" placeholder="your_email@domain.com"
+                 style="font:12px Space Mono,monospace;padding:10px;border:1px solid #2c6043;background:#0d1c14;color:#d5ffe3">
+          <textarea required name="message" rows="5" aria-label="Your message" placeholder="write_message_here..."
+                    style="font:12px Space Mono,monospace;padding:10px;border:1px solid #2c6043;background:#0d1c14;color:#d5ffe3;resize:vertical"></textarea>
+          <button class="run" type="submit" style="width:max-content;background:#07100c;cursor:pointer">./send_message.sh ↗</button>
+        </form>
 
-      <div class="resume">
-        <div>
-          <h3>Education</h3>
-          <div class="timeline">
-            <div>
-              <span class="mono">2026 — Present</span>
-              <b>M.Sc. Data Science, University of Colorado Boulder</b>
-              <p>Machine Learning, Statistical Computing & Data Visualization.</p>
-            </div>
-            <div>
-              <span class="mono">2013 — 2016</span>
-              <b>University Certificate, Toronto Metropolitan University</b>
-              <p>Java, Visual Basic, C++, Interface Design & Calculus.</p>
-            </div>
-          </div>
-        </div>
+        <p id="form-status" role="status" style="min-height:20px;color:#65ff95;font:11px Space Mono,monospace"></p>
 
-        <div>
-          <h3>Certifications</h3>
-          <ul>
-            <li>
-              Computer Science for Web Programming — Harvard University via edX:
-              Python, JavaScript, SQL, Django, Flask & Bootstrap.
-            </li>
-            <li>
-              Big SQL Energy — Beginner & Intermediate:
-              SQL for data analysis and custom reporting.
-            </li>
-          </ul>
-        </div>
-      </div>
-    </section>
+        <a class="run" href="https://github.com/hoomanv3xo" target="_blank">git remote -v / github ↗</a>
+      </section>
 
-    <!-- ============================================================
-         CONTACT & FOOTER
-         ============================================================ -->
-    <section class="contact" id="contact">
-      <div class="contacttop mono">05 / Start a conversation</div>
-
-      <h2>Have a project?<br><a href="mailto:hoomanv3@gmail.com">Say hello ↗</a></h2>
-
-      <footer class="mono">
-        <span>© 2026 Hooman Vahdat</span>
-        <div class="socials">
-          <a href="https://github.com/hoomanv3xo" target="_blank">GitHub</a>
-          <a href="https://www.linkedin.com/in/hoomanvahdat" target="_blank">LinkedIn</a>
-          <a href="https://www.instagram.com/hooman_the_coder" target="_blank">Instagram</a>
-        </div>
-        <span>Toronto, ON</span>
+      <!-- ============ FOOTER ============ -->
+      <footer>
+        <span>© 2026 HOOMAN VAHDAT</span>
+        <span>
+          <a href="https://www.linkedin.com/in/hoomanvahdat" target="_blank">LINKEDIN</a> ·
+          <a href="https://www.instagram.com/hooman_the_coder" target="_blank">INSTAGRAM</a>
+        </span>
       </footer>
-    </section>
 
+    </div>
   </main>
+
+  <!-- ============ CONTACT FORM HANDLER ============ -->
+  <script>
+    const form = document.getElementById("contact-form");
+    const status = document.getElementById("form-status");
+
+    form.addEventListener("submit", async (e) => {
+      e.preventDefault();
+      const button = form.querySelector("button");
+      button.disabled = true;
+      button.textContent = "sending...";
+      status.textContent = "";
+
+      try {
+        const response = await fetch(form.action, {
+          method: "POST",
+          body: new FormData(form),
+          headers: { Accept: "application/json" }
+        });
+        if (!response.ok) throw new Error();
+        form.reset();
+        status.textContent = "message sent — thanks for reaching out.";
+      } catch {
+        status.style.color = "#ff7568";
+        status.textContent = "send failed — please email hoomanv3@gmail.com directly.";
+      } finally {
+        button.disabled = false;
+        button.textContent = "./send_message.sh ↗";
+      }
+    });
+  </script>
 </body>
 </html>
-
-
-
-    
+      
+         
