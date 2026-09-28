@@ -110,9 +110,10 @@ h1 {
 }
 
 /* Projects Grid */
+
 .projects-container {
     display: grid;
-    grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+    grid-template-columns: repeat(3, 1fr);
     gap: 20px;
     margin-top: 20px;
 }
@@ -197,6 +198,17 @@ h1 {
     #wrapper {
         flex-direction: column;
     }
+    @media (max-width: 1000px) {
+    .projects-container {
+        grid-template-columns: repeat(2, 1fr);
+    }
+}
+
+@media (max-width: 768px) {
+    .projects-container {
+        grid-template-columns: 1fr;
+    }
+}
 
     #leftcolumn {
         width: 100%;
