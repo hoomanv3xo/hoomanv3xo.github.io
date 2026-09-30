@@ -219,7 +219,7 @@ h1 {
         grid-template-columns: 1fr;
     }
 }
-/* Content links: same neon effect as the sidebar */
+/* Content links: tricolor neon hover */
 #content > p a {
     display: inline-block;
     color: #00aa44;
@@ -233,11 +233,12 @@ h1 {
     text-shadow:
         0 0 5px #00cc55,
         0 0 10px #00cc55,
-        0 0 20px #00cc55;
+        0 0 20px #ce2b37,
+        0 0 30px #ce2b37;
     transform: translateX(8px);
 }
 
-/* Animated underline */
+/* Underline that grows in and flows green -> white -> red */
 #content > p a::after {
     content: "";
     position: absolute;
@@ -245,25 +246,25 @@ h1 {
     bottom: -3px;
     width: 0;
     height: 2px;
-    background: #00cc55;
-    transition: 0.3s;
+    background: linear-gradient(90deg, #00aa44, #ffffff, #ce2b37, #00aa44);
+    background-size: 300%;
+    transition: width 0.3s;
 }
 
 #content > p a:hover::after {
     width: 100%;
+    animation: borderFlow 3s linear infinite;
 }
 
-/* Icon links (email, GitHub, LinkedIn, Instagram):
-   text-shadow doesn't affect images, so use a glow filter instead */
+/* Icon links: green + red glow */
 #content > p a img {
     transition: 0.3s;
 }
 
 #content > p a:hover img {
-    filter: drop-shadow(0 0 5px #00cc55) drop-shadow(0 0 10px #00cc55);
+    filter: drop-shadow(0 0 5px #00cc55) drop-shadow(0 0 10px #ce2b37);
 }
 
-/* No underline bar under the icons */
 #content > p a:has(img)::after {
     display: none;
-} 
+}
