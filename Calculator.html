@@ -1,0 +1,256 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>Calculator</title>
+<link rel="icon" href="data:image/svg+xml,<svg xmlns=%22http://www.w3.org/2000/svg%22 viewBox=%220 0 100 100%22><text y=%22.9em%22 font-size=%2290%22>🧮</text></svg>">
+<style>
+:root {
+  --bg: #eef1f5; --panel: #ffffff; --ink: #1c2430; --muted: #6a7586;
+  --key: #e4e9f0; --key-hover: #d6dde8; --op: #2f5d8a; --op-ink: #ffffff;
+  --eq: #d9822b; --eq-ink: #1c1200; --line: #cfd6e0; --focus: #1a73e8;
+  box-sizing: border-box;
+  padding-top: env(safe-area-inset-top, 0px);
+  padding-bottom: env(safe-area-inset-bottom, 0px);
+}
+@media (prefers-color-scheme: dark) {
+  :root:not([data-theme="light"]) {
+    --bg: #12161c; --panel: #1b222b; --ink: #e8edf4; --muted: #8b97a8;
+    --key: #28313d; --key-hover: #344050; --op: #5c93c9; --op-ink: #0c1118;
+    --eq: #e8963f; --eq-ink: #1c1200; --line: #323d4b; --focus: #7ab0ff;
+    color-scheme: dark;
+  }
+}
+:root[data-theme="dark"] {
+  --bg: #12161c; --panel: #1b222b; --ink: #e8edf4; --muted: #8b97a8;
+  --key: #28313d; --key-hover: #344050; --op: #5c93c9; --op-ink: #0c1118;
+  --eq: #e8963f; --eq-ink: #1c1200; --line: #323d4b; --focus: #7ab0ff;
+  color-scheme: dark;
+}
+html { scroll-padding-top: env(safe-area-inset-top, 0px); }
+* { box-sizing: border-box; }
+body {
+  margin: 0; min-height: 100vh; background: var(--bg); color: var(--ink);
+  font-family: "Segoe UI", system-ui, -apple-system, Roboto, sans-serif;
+  display: flex; align-items: flex-start; justify-content: center;
+  padding: 24px 16px;
+}
+.app { display: flex; gap: 20px; flex-wrap: wrap; justify-content: center; width: 100%; max-width: 720px; }
+.calc, .history {
+  background: var(--panel); border: 1px solid var(--line); border-radius: 14px; padding: 16px;
+}
+.calc { flex: 1 1 300px; max-width: 360px; }
+.history { flex: 1 1 220px; max-width: 300px; min-height: 120px; align-self: flex-start; }
+.display { text-align: right; padding: 8px 6px 14px; min-height: 92px; overflow: hidden; }
+.expr { color: var(--muted); font-size: 0.95rem; min-height: 1.4em; overflow-wrap: anywhere; }
+.value { font-size: 2.6rem; font-weight: 600; font-variant-numeric: tabular-nums; line-height: 1.2; overflow-wrap: anywhere; }
+.value.small { font-size: 1.4rem; }
+.keys { display: grid; grid-template-columns: repeat(4, 1fr); gap: 8px; }
+button {
+  font: inherit; font-size: 1.25rem; padding: 16px 0; border: 0; border-radius: 10px;
+  background: var(--key); color: var(--ink); cursor: pointer;
+}
+button:hover { background: var(--key-hover); }
+button:active { transform: translateY(1px); }
+button:focus-visible { outline: 3px solid var(--focus); outline-offset: 2px; }
+button.op { background: var(--op); color: var(--op-ink); }
+button.op.active { outline: 3px solid var(--eq); outline-offset: -3px; }
+button.eq { background: var(--eq); color: var(--eq-ink); font-weight: 700; }
+button.wide { grid-column: span 2; }
+.history h2 { font-size: 1rem; margin: 0 0 10px; display: flex; justify-content: space-between; align-items: center; }
+.history h2 button { font-size: 0.85rem; padding: 6px 10px; }
+.history ul { list-style: none; margin: 0; padding: 0; }
+.history li { padding: 8px 0; border-top: 1px solid var(--line); font-variant-numeric: tabular-nums; cursor: pointer; }
+.history li:hover { color: var(--op); }
+.history li small { display: block; color: var(--muted); }
+.empty { color: var(--muted); font-size: 0.9rem; }
+@media (prefers-reduced-motion: no-preference) { button { transition: background 0.12s; } }
+</style>
+</head>
+<body>
+<div class="app">
+  <main class="calc" aria-label="Calculator">
+    <div class="display" aria-live="polite">
+      <div class="expr" id="expr"></div>
+      <div class="value" id="value">0</div>
+    </div>
+    <div class="keys" id="keys">
+      <button data-action="clear">AC</button>
+      <button data-action="back" aria-label="Backspace">⌫</button>
+      <button data-action="percent">%</button>
+      <button class="op" data-op="/" aria-label="Divide">÷</button>
+      <button data-digit="7">7</button><button data-digit="8">8</button><button data-digit="9">9</button>
+      <button class="op" data-op="*" aria-label="Multiply">×</button>
+      <button data-digit="4">4</button><button data-digit="5">5</button><button data-digit="6">6</button>
+      <button class="op" data-op="-" aria-label="Subtract">−</button>
+      <button data-digit="1">1</button><button data-digit="2">2</button><button data-digit="3">3</button>
+      <button class="op" data-op="+" aria-label="Add">+</button>
+      <button data-action="negate" aria-label="Change sign">±</button>
+      <button data-digit="0">0</button>
+      <button data-action="dot">.</button>
+      <button class="eq" data-action="equals">=</button>
+    </div>
+  </main>
+  <aside class="history" aria-label="History">
+    <h2>History <button id="clearHistory" type="button">Clear</button></h2>
+    <ul id="historyList"></ul>
+    <p class="empty" id="emptyMsg">Press = to save a result here. Click an entry to reuse it.</p>
+  </aside>
+</div>
+
+<script>
+(function () {
+  var exprEl = document.getElementById("expr");
+  var valueEl = document.getElementById("value");
+  var keysEl = document.getElementById("keys");
+  var listEl = document.getElementById("historyList");
+  var emptyMsg = document.getElementById("emptyMsg");
+  var SYMBOL = { "+": "+", "-": "−", "*": "×", "/": "÷" };
+
+  var current = "0";      // number being typed
+  var previous = null;    // left-hand number
+  var operator = null;    // pending operator
+  var fresh = false;      // next digit starts a new number
+  var errored = false;
+
+  function fmt(n) {
+    if (!isFinite(n)) return "Error";
+    return String(Number(n.toPrecision(12)));
+  }
+
+  function render() {
+    valueEl.textContent = current;
+    valueEl.classList.toggle("small", current.length > 11);
+    exprEl.textContent = operator ? fmt(parseFloat(previous)) + " " + SYMBOL[operator] : "";
+    var opButtons = keysEl.querySelectorAll("[data-op]");
+    for (var i = 0; i < opButtons.length; i++) {
+      opButtons[i].classList.toggle("active", operator === opButtons[i].dataset.op && fresh);
+    }
+  }
+
+  function showError(msg) {
+    errored = true;
+    current = msg; previous = null; operator = null; fresh = true;
+    render();
+  }
+
+  function compute(a, op, b) {
+    if (op === "+") return a + b;
+    if (op === "-") return a - b;
+    if (op === "*") return a * b;
+    if (op === "/") return b === 0 ? null : a / b;
+  }
+
+  function clearAll() { current = "0"; previous = null; operator = null; fresh = false; errored = false; render(); }
+
+  function inputDigit(d) {
+    if (errored) clearAll();
+    if (fresh) { current = d; fresh = false; }
+    else if (current === "0") current = d;
+    else if (current.replace(/[-.]/g, "").length < 15) current += d;
+    render();
+  }
+
+  function inputDot() {
+    if (errored) clearAll();
+    if (fresh) { current = "0."; fresh = false; }
+    else if (current.indexOf(".") === -1) current += ".";
+    render();
+  }
+
+  function chooseOp(op) {
+    if (errored) return;
+    if (operator && !fresh) { if (!evaluate(true)) return; }
+    previous = current; operator = op; fresh = true;
+    render();
+  }
+
+  function evaluate(chain) {
+    if (!operator || errored) return true;
+    var a = parseFloat(previous), b = parseFloat(current);
+    var result = compute(a, operator, b);
+    if (result === null) { showError("Can’t divide by zero"); return false; }
+    var line = fmt(a) + " " + SYMBOL[operator] + " " + fmt(b);
+    current = fmt(result);
+    if (!chain) addHistory(line, current);
+    previous = null; operator = null; fresh = true;
+    render();
+    return true;
+  }
+
+  function addHistory(line, result) {
+    var li = document.createElement("li");
+    var small = document.createElement("small");
+    small.textContent = line + " =";
+    var strong = document.createElement("span");
+    strong.textContent = result;
+    li.appendChild(small);
+    li.appendChild(strong);
+    li.dataset.result = result;
+    listEl.insertBefore(li, listEl.firstChild);
+    while (listEl.children.length > 10) listEl.removeChild(listEl.lastChild);
+    emptyMsg.hidden = true;
+  }
+
+  function backspace() {
+    if (errored) return clearAll();
+    if (fresh) return;
+    current = current.length > 1 && !(current.length === 2 && current[0] === "-") ? current.slice(0, -1) : "0";
+    render();
+  }
+
+  function negate() {
+    if (errored || current === "0") return;
+    current = current[0] === "-" ? current.slice(1) : "-" + current;
+    render();
+  }
+
+  function percent() {
+    if (errored) return;
+    current = fmt(parseFloat(current) / 100);
+    fresh = true;
+    render();
+  }
+
+  // One listener on the keypad handles every button (event delegation).
+  keysEl.addEventListener("click", function (e) {
+    var btn = e.target.closest("button");
+    if (!btn) return;
+    if (btn.dataset.digit) return inputDigit(btn.dataset.digit);
+    if (btn.dataset.op) return chooseOp(btn.dataset.op);
+    var actions = { clear: clearAll, back: backspace, percent: percent, negate: negate, dot: inputDot,
+                    equals: function () { evaluate(false); } };
+    if (actions[btn.dataset.action]) actions[btn.dataset.action]();
+  });
+
+  // Keyboard support
+  document.addEventListener("keydown", function (e) {
+    if (e.ctrlKey || e.metaKey || e.altKey) return;
+    var k = e.key;
+    if (k >= "0" && k <= "9") inputDigit(k);
+    else if (k === ".") inputDot();
+    else if ("+-*/".indexOf(k) !== -1) { e.preventDefault(); chooseOp(k); }
+    else if (k === "Enter" || k === "=") { e.preventDefault(); evaluate(false); }
+    else if (k === "Backspace") backspace();
+    else if (k === "Escape") clearAll();
+    else if (k === "%") percent();
+  });
+
+  // History: click an entry to reuse its result; Clear removes all nodes.
+  listEl.addEventListener("click", function (e) {
+    var li = e.target.closest("li");
+    if (!li) return;
+    current = li.dataset.result; previous = null; operator = null; fresh = true; errored = false;
+    render();
+  });
+  document.getElementById("clearHistory").addEventListener("click", function () {
+    while (listEl.firstChild) listEl.removeChild(listEl.firstChild);
+    emptyMsg.hidden = false;
+  });
+
+  render();
+})();
+</script>
+</body>
+</html>
